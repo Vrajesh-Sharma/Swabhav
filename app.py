@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
-import pandas as pd
 import tensorflow as tf
 
 app = Flask(__name__)
 
-# Load model & preprocessors once at startup (global scope)
+# Load model & preprocessors
 scaler = joblib.load('preprocessing/scaler.joblib')
 le_gender = joblib.load('preprocessing/le_gender.joblib')
 le_edu = joblib.load('preprocessing/le_edu.joblib')
@@ -38,7 +37,7 @@ def index():
     mbti_pred, class_probs, description = None, None, None
     if request.method == 'POST':
         try:
-            # Input extraction
+            # Extract and transform form input
             age = float(request.form['age'])
             gender = le_gender.transform([request.form['gender']])[0]
             education = le_edu.transform([request.form['education']])[0]
@@ -47,10 +46,8 @@ def index():
             sensing = float(request.form['sensing'])
             thinking = float(request.form['thinking'])
             judging = float(request.form['judging'])
-            # Use DataFrame for scaler input
-            feature_names = ['age', 'gender', 'education', 'introversion', 'sensing', 'thinking', 'judging', 'interest']
-            features_df = pd.DataFrame([[age, gender, education, introversion, sensing, thinking, judging, interest]], columns=feature_names)
-            features_scaled = scaler.transform(features_df)
+            features = np.array([[age, gender, education, introversion, sensing, thinking, judging, interest]])
+            features_scaled = scaler.transform(features)
             # Predict
             pred_proba = deep_model.predict(features_scaled)
             pred_class = np.argmax(pred_proba)
