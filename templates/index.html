@@ -2,145 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBTI Personality Predictor | Discover Your Type</title>
+    <title>MBTI Personality Predictor | Start</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="hero-section">
-        <div class="container">
-            <div class="header">
-                <h1>🧠 Personality Predictor</h1>
-                <p class="subtitle">Discover your MBTI personality type through AI-powered analysis</p>
-            </div>
-
-            <div class="form-container">
-                <form method="post" class="personality-form">
-                    <div class="form-grid">
-                        <!-- Demographics Section -->
-                        <div class="section demographics">
-                            <h3>📊 Demographics</h3>
-                            
-                            <div class="input-group">
-                                <label>Age</label>
-                                <p class="feature-desc">Your current age in years</p>
-                                <input type="number" name="age" min="10" max="100" placeholder="e.g., 25" required>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Gender</label>
-                                <p class="feature-desc">Select your gender identity</p>
-                                <select name="gender" required>
-                                    {% for g in gender_classes %}
-                                        <option value="{{g}}">{{g}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Education Level</label>
-                                <p class="feature-desc">0 = High school/undergraduate | 1 = Graduate degree or higher</p>
-                                <select name="education" required>
-                                    {% for e in edu_classes %}
-                                        <option value="{{e}}">
-                                            {% if e == 0 %}High School/Undergraduate{% else %}Graduate/Postgraduate{% endif %}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Primary Interest</label>
-                                <p class="feature-desc">Your main area of interest or passion</p>
-                                <select name="interest" required>
-                                    {% for i in interest_classes %}
-                                        <option value="{{i}}">{{i}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- MBTI Traits Section -->
-                        <div class="section traits">
-                            <h3>🎯 Personality Traits</h3>
-                            
-                            <div class="input-group">
-                                <label>Extrovertion Score</label>
-                                <p class="feature-desc">0-10 scale: Higher scores indicate greater extroversion tendency</p>
-                                <input type="range" name="introversion" min="0" max="10" step="0.1" value="5" oninput="updateValue(this, 'intro-value')">
-                                <span class="range-value" id="intro-value">5.0</span>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Sensing Score</label>
-                                <p class="feature-desc">0-10 scale: Higher scores indicate preference for concrete, practical information</p>
-                                <input type="range" name="sensing" min="0" max="10" step="0.1" value="5" oninput="updateValue(this, 'sensing-value')">
-                                <span class="range-value" id="sensing-value">5.0</span>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Thinking Score</label>
-                                <p class="feature-desc">0-10 scale: Higher scores indicate preference for logical, objective decisions</p>
-                                <input type="range" name="thinking" min="0" max="10" step="0.1" value="5" oninput="updateValue(this, 'thinking-value')">
-                                <span class="range-value" id="thinking-value">5.0</span>
-                            </div>
-
-                            <div class="input-group">
-                                <label>Judging Score</label>
-                                <p class="feature-desc">0-10 scale: Higher scores indicate preference for structure and closure</p>
-                                <input type="range" name="judging" min="0" max="10" step="0.1" value="5" oninput="updateValue(this, 'judging-value')">
-                                <span class="range-value" id="judging-value">5.0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="predict-btn">
-                        🔮 Predict My Personality Type
-                    </button>
-                </form>
-            </div>
-
-            {% if mbti_pred %}
-                <div class="result-container">
-                    <div class="result-card">
-                        <div class="result-header">
-                            <h2>🎉 Your Personality Type</h2>
-                            <div class="mbti-type">{{mbti_pred}}</div>
-                        </div>
-                        <p class="mbti-description">{{description}}</p>
-                        
-                        <div class="probabilities">
-                            <h3>🎯 Confidence Breakdown</h3>
-                            <div class="prob-grid">
-                                {% for cls, prob in class_probs.items() %}
-                                    {% if prob > 0.01 %}
-                                        <div class="prob-item">
-                                            <span class="prob-type">{{cls}}</span>
-                                            <div class="prob-bar">
-                                                <div class="prob-fill" style="width: {{prob * 100}}%"></div>
-                                                <span class="prob-value">{{(prob * 100)|round(1)}}%</span>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if description and description.startswith('Error') %}
-                <div class="error-message">{{ description }}</div>
-            {% endif %}
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>🧠 Personality Predictor</h1>
+        <p class="subtitle">Step 1: Enter your demographic information</p>
     </div>
-
-    <script>
-        function updateValue(slider, targetId) {
-            document.getElementById(targetId).textContent = parseFloat(slider.value).toFixed(1);
-        }
-    </script>
+    <form method="post" class="personality-form single-step-form">
+        <div class="input-group">
+            <label>Age</label>
+            <input type="number" name="age" min="10" max="100" placeholder="e.g., 25" required>
+        </div>
+        <div class="input-group">
+            <label>Gender</label>
+            <select name="gender" required>
+                {% for g in gender_classes %}
+                    <option value="{{g}}">{{g}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Education Level</label>
+            <select name="education" required>
+                {% for e in edu_classes %}
+                    <option value="{{e}}">{% if e == 0 %}High School/Undergraduate{% else %}Graduate/Postgraduate{% endif %}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Primary Interest</label>
+            <select name="interest" required>
+                {% for i in interest_classes %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="next-btn">Next</button>
+    </form>
+</div>
 </body>
 </html>

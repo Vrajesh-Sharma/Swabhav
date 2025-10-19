@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MBTI Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎯 Your Personality Type</h1>
+    </div>
+    {% if mbti_pred %}
+    <div class="result-card">
+        <h2 class="mbti-type">{{ mbti_pred }}</h2>
+        <p class="mbti-description">{{ description }}</p>
+        <h3>Confidence Breakdown</h3>
+        <div class="prob-grid">
+            {% for cls, prob in class_probs.items() %}
+                {% if prob > 0.01 %}
+                <div class="prob-item">
+                    <span class="prob-type">{{cls}}</span>
+                    <div class="prob-bar">
+                        <div class="prob-fill" style="width: {{prob * 100}}%"></div>
+                        <span class="prob-value">{{(prob * 100)|round(1)}}%</span>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="{{ url_for('demographics') }}" class="predict-btn">Retake Test</a>
+        </div>
+    </div>
+    {% elif description and description.startswith('Error') %}
+        <div class="error-message">{{ description }}</div>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="{{ url_for('demographics') }}" class="predict-btn">Try Again</a>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

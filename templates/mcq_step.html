@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personality Step {{ step }} of {{ total_steps }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+    function validateForm() {
+        const inputs = document.querySelectorAll('.mcq-options input[type="radio"]:checked');
+        if (inputs.length < 4) {
+            alert("Please answer all 4 questions to continue.");
+            return false;
+        }
+        return true;
+    }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🧩 Step {{ step }} of {{ total_steps }}</h1>
+        <div class="progress-bar">
+            <div class="progress" style="width: {{ (step / total_steps) * 100 }}%"></div>
+        </div>
+        <h2>{{ trait_label }} Questions</h2>
+    </div>
+    <form method="post" action="{{ url_for('mcq', step=step+1) }}" onsubmit="return validateForm();" class="mcq-form">
+        <div class="mcq-section">
+            {% for qtext in questions %}
+            <div class="input-group mcq-options">
+                <label><b>Q{{ loop.index }}:</b> {{ qtext }}</label>
+                <div class="mcq-row">
+                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="A" required> Excellent/Always</label>
+                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="B"> Good/Usually</label>
+                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="C"> Fair/Sometimes</label>
+                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="D"> Poor/Rarely</label>
+                </div>
+            </div>
+            {% endfor %}    
+        </div>
+        <button type="submit" class="next-btn">{% if step == total_steps %}See Results{% else %}Next{% endif %}</button>
+    </form>
+</div>
+</body>
+</html>
