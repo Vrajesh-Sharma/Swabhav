@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MBTI Result</title>
+    <title>Your Personality Type</title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Montserrat:600,700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-removebg.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
+<div class="glass-container">
     <div class="header">
         <h1>🎯 Your Personality Type</h1>
     </div>
@@ -14,28 +16,30 @@
     <div class="result-card">
         <h2 class="mbti-type">{{ mbti_pred }}</h2>
         <p class="mbti-description">{{ description }}</p>
-        <h3>Confidence Breakdown</h3>
-        <div class="prob-grid">
+        <h3 style="margin-top:2.1rem; color:#222;">Confidence Breakdown</h3>
+        <div class="prob-grid" style="margin-bottom:2rem;">
             {% for cls, prob in class_probs.items() %}
                 {% if prob > 0.01 %}
-                <div class="prob-item">
-                    <span class="prob-type">{{cls}}</span>
-                    <div class="prob-bar">
-                        <div class="prob-fill" style="width: {{prob * 100}}%"></div>
-                        <span class="prob-value">{{(prob * 100)|round(1)}}%</span>
+                <div class="prob-item" style="display:flex;align-items:center;gap:1.2rem;">
+                    <span class="prob-type" style="color:#95702b; min-width:60px; font-weight:500;">{{cls}}</span>
+                    <div class="prob-bar" style="flex:1;position:relative;">
+                        <div class="prob-fill" style="width: {{prob*100}}%;"></div>
+                        <span class="prob-value" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-weight:700;color:#b79818;">{{(prob*100)|round(1)}}%</span>
                     </div>
                 </div>
                 {% endif %}
             {% endfor %}
         </div>
-        <div style="text-align:center;margin-top:2rem;">
-            <a href="{{ url_for('demographics') }}" class="predict-btn">Retake Test</a>
+        <div style="text-align:center;">
+            <a href="{{ url_for('demographics') }}" class="predict-btn glass-btn" style="text-decoration: none;">Retake Test</a>
         </div>
     </div>
     {% elif description and description.startswith('Error') %}
-        <div class="error-message">{{ description }}</div>
-        <div style="text-align:center;margin-top:2rem;">
-            <a href="{{ url_for('demographics') }}" class="predict-btn">Try Again</a>
+        <div class="result-card" style="color:#b79818;font-weight:700;margin-bottom:2rem;">
+            {{ description }}
+        </div>
+        <div style="text-align:center;">
+            <a href="{{ url_for('demographics') }}" class="predict-btn glass-btn" style="text-decoration: none;">Try Again</a>
         </div>
     {% endif %}
 </div>

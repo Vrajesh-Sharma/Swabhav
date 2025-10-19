@@ -2,46 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MBTI Personality Predictor | Start</title>
+    <title>Personality Predictor | Start</title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Montserrat:600,700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
+<div class="glass-container">
     <div class="header">
         <h1>🧠 Personality Predictor</h1>
         <p class="subtitle">Step 1: Enter your demographic information</p>
     </div>
     <form method="post" class="personality-form single-step-form">
         <div class="input-group">
-            <label>Age</label>
-            <input type="number" name="age" min="10" max="100" placeholder="e.g., 25" required>
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="1" max="100" placeholder="e.g., 25" required>
         </div>
         <div class="input-group">
-            <label>Gender</label>
-            <select name="gender" required>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
                 {% for g in gender_classes %}
                     <option value="{{g}}">{{g}}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="input-group">
-            <label>Education Level</label>
-            <select name="education" required>
+            <label for="education">Education Level</label>
+            <select id="education" name="education" required>
                 {% for e in edu_classes %}
-                    <option value="{{e}}">{% if e == 0 %}High School/Undergraduate{% else %}Graduate/Postgraduate{% endif %}</option>
+                    <option value="{{e}}">
+                        {% if e == 0 %}High School/Undergraduate{% else %}Graduate/Postgraduate{% endif %}
+                    </option>
                 {% endfor %}
             </select>
         </div>
         <div class="input-group">
-            <label>Primary Interest</label>
-            <select name="interest" required>
+            <label for="interest">Primary Interest</label>
+            <select id="interest" name="interest" required>
                 {% for i in interest_classes %}
                     <option value="{{i}}">{{i}}</option>
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" class="next-btn">Next</button>
+        <button type="submit" class="next-btn glass-btn">Next</button>
     </form>
 </div>
 </body>

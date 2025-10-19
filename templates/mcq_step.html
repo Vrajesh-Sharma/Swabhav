@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Personality Step {{ step }} of {{ total_steps }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-removebg.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:800,900|Montserrat:400,600,700&display=swap" rel="stylesheet">
     <script>
     function validateForm() {
         const inputs = document.querySelectorAll('.mcq-options input[type="radio"]:checked');
@@ -15,11 +17,11 @@
     }
     </script>
 </head>
-<body>
-<div class="container">
-    <div class="header">
+<body class="animated-bg">
+<div class="glass-container fade-in">
+    <div class="header neon-glow">
         <h1>🧩 Step {{ step }} of {{ total_steps }}</h1>
-        <div class="progress-bar">
+        <div class="progress-bar glass-progress">
             <div class="progress" style="width: {{ (step / total_steps) * 100 }}%"></div>
         </div>
         <h2>{{ trait_label }} Questions</h2>
@@ -28,17 +30,29 @@
         <div class="mcq-section">
             {% for qtext in questions %}
             <div class="input-group mcq-options">
-                <label><b>Q{{ loop.index }}:</b> {{ qtext }}</label>
+                <label><b>Q{{ loop.index }}:</b> <span>{{ qtext }}</span></label>
                 <div class="mcq-row">
-                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="A" required> Excellent/Always</label>
-                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="B"> Good/Usually</label>
-                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="C"> Fair/Sometimes</label>
-                    <label><input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="D"> Poor/Rarely</label>
+                    <label>
+                        <input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="A" required>
+                        <span>Excellent/Always</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="B">
+                        <span>Good/Usually</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="C">
+                        <span>Fair/Sometimes</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ trait_key }}_q{{ loop.index }}" value="D">
+                        <span>Poor/Rarely</span>
+                    </label>
                 </div>
             </div>
-            {% endfor %}    
+            {% endfor %}
         </div>
-        <button type="submit" class="next-btn">{% if step == total_steps %}See Results{% else %}Next{% endif %}</button>
+        <button type="submit" class="next-btn glass-btn">{% if step == total_steps %}See Results{% else %}Next{% endif %}</button>
     </form>
 </div>
 </body>
